@@ -1,0 +1,2 @@
+from .repository_implementation_customers import Customer as CustomerORM
+from .repository_implementation_payments import PaymentsCustomer as PaymentsCustomerORM
