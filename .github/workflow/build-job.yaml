@@ -1,0 +1,30 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Build Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        push: false
+        tags: kuspit-payroll-system-back:latest
+    - name: Start Docker Compose
+      run: docker-compose up -d
+    - name: Stop Docker Compose
+      run: docker-compose down
+    - name: Deploy to server
+      uses: easingthemes/ssh-deploy@v2.3.3
+      with:
+        ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+        ssh-known-hosts: ${{ secrets.SERVER_KNOWN_HOSTS }}
+        remote-user: p_maguila
+        remote-ssh-port: 22
+        remote-ssh-path: /path/to/remote/directory
+        local-folder: .

@@ -1,0 +1,109 @@
+# Black settings
+[settings]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 120
+target_version = ['py310']
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.nox
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | venv/*
+  | env/*
+  | migrations/*
+  | apps.py
+  | manage.py
+  | configuracion/*
+)/
+'''
+force-exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.nox
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | venv
+  | env
+  | migrations
+  | apps.py
+  | manage.py
+  | configuracion
+)/
+'''
+
+# Isort settings
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+line_length = 120
+known_configuracion = "configuracion"
+sections = ["FUTURE", "STDLIB", "CONFIGURACION", "FIRSTPARTY", "THIRDPARTY", "LOCALFOLDER"]
+import_heading_stdlib = "Librerias Estandar"
+import_heading_configuracion = "Variables de Configuración"
+import_heading_localfolder = "Proyecto"
+import_heading_thirdparty = "Librerías de Terceros"
+length_sort = true
+length_sort_sections = ["future", "stdlib", "configuracion", "firstparty", "thirdparty", "localfolder"]
+reverse_sort = true
+remove_redundant_aliases = true
+skip_glob= ["**/migrations/*", "configuracion/*", '**/apps.py', 'manage.py']
+
+
+
+# Pylint settings
+[tool.pylint.messages_control]
+disable = "E1101, E0402, R0901, C0114, F0401, W0223, C0115, C0116, R0903, C0411, C0412, C2401, R0801, locally-disabled"
+fail-under = 9.15
+ignore=["migrations", "configuracion", "apps.py", "test.py"]
+
+
+# C0411 orden de librerias
+# W0223 Used when an abstract method (i.e. raise NotImplementedError) is not overridden in concrete class.
+# C0114 (missing-module-docstring)
+# C0115 (missing-class-docstring)
+# C0116 (missing-function-docstring)
+# R0903: Too few public methods (0/2) (too-few-public-methods)
+# C2401:  contains a non-ASCII character
+# R0801: Codigo Duplicado
+
+[tool.pylint.format]
+max-line-length = "120"
+max-attributes=15
+max-args=10
+max-branches=20
+max-statements=65
+
+# Flake
+[tool.autoflake]
+in-place = true
+remove-all-unused-imports = true
+remove-duplicate-keys = true
+remove-unused-variables = true
+ignore-init-module-imports = true
+
+[tool.commitizen]
+version = "0.1.1"
+update_changelog_on_bump = true

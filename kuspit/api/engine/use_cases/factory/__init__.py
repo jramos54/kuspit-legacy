@@ -1,2 +1,0 @@
-from .constructor_manager_customers import constructor_manager_customers
-from .constructor_manager_payments import constructor_manager_payments

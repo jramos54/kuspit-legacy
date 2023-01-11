@@ -1,0 +1,3 @@
+
+class AssertionsRecipient:
+    pass

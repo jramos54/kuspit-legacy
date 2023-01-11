@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: dyp-db
+      CPLUS_INCLUDE_PATH: /usr/include/gdal
+      C_INCLUDE_PATH: /usr/include/gdal
+      GDAL_LIBRARY_PATH: /usr/lib/libgdal.so
+      GEOS_LIBRARY_PATH: /usr/lib/libgeo.so
+    volumes:
+      - db_data:/var/lib/postgresql/data/
+#    command: apt-get update && apt-get install -y postgis && psql -U postgres -c "CREATE EXTENSION postgis;"
+
+  dyp:
+    build: dyp/
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    env_file:
+      - dyp/.env
+    depends_on:
+      - db
+
+volumes:
+  db_data:

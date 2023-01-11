@@ -1,0 +1,671 @@
+[
+    {
+        "model": "admin.logentry",
+        "pk": 1,
+        "fields": {
+            "action_time": "2023-03-09T17:31:22.524Z",
+            "user": 1,
+            "content_type": 7,
+            "object_id": "1",
+            "object_repr": "Marcus",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 1,
+        "fields": {
+            "name": "Can add log entry",
+            "content_type": 1,
+            "codename": "add_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 2,
+        "fields": {
+            "name": "Can change log entry",
+            "content_type": 1,
+            "codename": "change_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 3,
+        "fields": {
+            "name": "Can delete log entry",
+            "content_type": 1,
+            "codename": "delete_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 4,
+        "fields": {
+            "name": "Can view log entry",
+            "content_type": 1,
+            "codename": "view_logentry"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 5,
+        "fields": {
+            "name": "Can add permission",
+            "content_type": 2,
+            "codename": "add_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 6,
+        "fields": {
+            "name": "Can change permission",
+            "content_type": 2,
+            "codename": "change_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 7,
+        "fields": {
+            "name": "Can delete permission",
+            "content_type": 2,
+            "codename": "delete_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 8,
+        "fields": {
+            "name": "Can view permission",
+            "content_type": 2,
+            "codename": "view_permission"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 9,
+        "fields": {
+            "name": "Can add group",
+            "content_type": 3,
+            "codename": "add_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 10,
+        "fields": {
+            "name": "Can change group",
+            "content_type": 3,
+            "codename": "change_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 11,
+        "fields": {
+            "name": "Can delete group",
+            "content_type": 3,
+            "codename": "delete_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 12,
+        "fields": {
+            "name": "Can view group",
+            "content_type": 3,
+            "codename": "view_group"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 13,
+        "fields": {
+            "name": "Can add content type",
+            "content_type": 4,
+            "codename": "add_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 14,
+        "fields": {
+            "name": "Can change content type",
+            "content_type": 4,
+            "codename": "change_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 15,
+        "fields": {
+            "name": "Can delete content type",
+            "content_type": 4,
+            "codename": "delete_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 16,
+        "fields": {
+            "name": "Can view content type",
+            "content_type": 4,
+            "codename": "view_contenttype"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 17,
+        "fields": {
+            "name": "Can add session",
+            "content_type": 5,
+            "codename": "add_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 18,
+        "fields": {
+            "name": "Can change session",
+            "content_type": 5,
+            "codename": "change_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 19,
+        "fields": {
+            "name": "Can delete session",
+            "content_type": 5,
+            "codename": "delete_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 20,
+        "fields": {
+            "name": "Can view session",
+            "content_type": 5,
+            "codename": "view_session"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 21,
+        "fields": {
+            "name": "Can add customer",
+            "content_type": 6,
+            "codename": "add_customer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 22,
+        "fields": {
+            "name": "Can change customer",
+            "content_type": 6,
+            "codename": "change_customer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 23,
+        "fields": {
+            "name": "Can delete customer",
+            "content_type": 6,
+            "codename": "delete_customer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 24,
+        "fields": {
+            "name": "Can view customer",
+            "content_type": 6,
+            "codename": "view_customer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 25,
+        "fields": {
+            "name": "Can add payments customer",
+            "content_type": 7,
+            "codename": "add_paymentscustomer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 26,
+        "fields": {
+            "name": "Can change payments customer",
+            "content_type": 7,
+            "codename": "change_paymentscustomer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 27,
+        "fields": {
+            "name": "Can delete payments customer",
+            "content_type": 7,
+            "codename": "delete_paymentscustomer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 28,
+        "fields": {
+            "name": "Can view payments customer",
+            "content_type": 7,
+            "codename": "view_paymentscustomer"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 29,
+        "fields": {
+            "name": "Can add user",
+            "content_type": 8,
+            "codename": "add_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 30,
+        "fields": {
+            "name": "Can change user",
+            "content_type": 8,
+            "codename": "change_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 31,
+        "fields": {
+            "name": "Can delete user",
+            "content_type": 8,
+            "codename": "delete_user"
+        }
+    },
+    {
+        "model": "auth.permission",
+        "pk": 32,
+        "fields": {
+            "name": "Can view user",
+            "content_type": 8,
+            "codename": "view_user"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 1,
+        "fields": {
+            "app_label": "admin",
+            "model": "logentry"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 2,
+        "fields": {
+            "app_label": "auth",
+            "model": "permission"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 3,
+        "fields": {
+            "app_label": "auth",
+            "model": "group"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 4,
+        "fields": {
+            "app_label": "contenttypes",
+            "model": "contenttype"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 5,
+        "fields": {
+            "app_label": "sessions",
+            "model": "session"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 6,
+        "fields": {
+            "app_label": "webApp",
+            "model": "customer"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 7,
+        "fields": {
+            "app_label": "webApp",
+            "model": "paymentscustomer"
+        }
+    },
+    {
+        "model": "contenttypes.contenttype",
+        "pk": 8,
+        "fields": {
+            "app_label": "backoffice",
+            "model": "user"
+        }
+    },
+    {
+        "model": "sessions.session",
+        "pk": "1kzkmu1rdtrh1gcj1s7563vwqv3zj0mg",
+        "fields": {
+            "session_data": ".eJxVjMEOwiAQRP-FsyGlLBQ8eu83kGWXStXQpLQn479Lkx40mdPMe_MWAfcth72mNcwsrkKJy28XkZ6pHAM_sNwXSUvZ1jnKA5HnWuW4cHrdTvbvIGPNzbYOvKLJKvBoPViA5rLuO9NN3pJLDik61om90ZC0gZbBQT940hhZfL7J_Tdb:1paK6Z:Pf8MnMAs5mtINiPUOZ7W4_9K40yc4F3WiXdkppZLxoQ",
+            "expire_date": "2023-03-23T17:31:03.797Z"
+        }
+    },
+    {
+        "model": "webApp.customer",
+        "pk": 1,
+        "fields": {
+            "created_at": "2023-03-09T17:30:11.245Z",
+            "updated_at": "2023-03-09T17:30:11.245Z",
+            "name": "Marcus",
+            "paternal_surname": "Aurelious",
+            "email": "maurelious@yopmail.com"
+        }
+    },
+    {
+        "model": "webApp.customer",
+        "pk": 2,
+        "fields": {
+            "created_at": "2023-03-09T17:30:37.014Z",
+            "updated_at": "2023-03-09T17:30:37.014Z",
+            "name": "Miguel",
+            "paternal_surname": "Bernard",
+            "email": "mbr@yopmail.com"
+        }
+    },
+    {
+        "model": "webApp.paymentscustomer",
+        "pk": 1,
+        "fields": {
+            "created_at": "2023-03-09T17:31:22.521Z",
+            "updated_at": "2023-03-09T17:31:22.521Z",
+            "customer": 1,
+            "amount": 1.0,
+            "product_name": "Abono",
+            "quantity": 4500
+        }
+    },
+    {
+        "model": "backoffice.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$KkkhiyD0QvpS$gr3v/K/x2GhJfaoaaynMF9yl8eg9l3SRwctAQ1GR21M=",
+            "last_login": "2023-03-09T17:31:03.789Z",
+            "location": null,
+            "created_at": "2023-03-09T17:13:09.742Z",
+            "updated_at": "2023-03-09T17:13:09.742Z",
+            "username": "superadmin",
+            "email": "dj-superadmin@forte.io",
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
+            "is_customer": false,
+            "is_persona_fisica": false,
+            "is_persona_moral": false,
+            "open_fin_id": null,
+            "payments_user_id": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "backoffice.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$eV6qn4nRsrSp$vQ6sTCXenHyDgvaFtgaqNEAcrBQj/cqXuI4VxngMSaM=",
+            "last_login": null,
+            "location": null,
+            "created_at": "2023-03-09T17:13:49.484Z",
+            "updated_at": "2023-03-09T17:13:49.484Z",
+            "username": "admin",
+            "email": "dj-admin@forte.io",
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
+            "is_customer": false,
+            "is_persona_fisica": false,
+            "is_persona_moral": false,
+            "open_fin_id": null,
+            "payments_user_id": null,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 1,
+        "fields": {
+            "question": "¿Qué es DyP?",
+            "answer": "Somos una institución de fondos de pago electrónico (IFPE) mexicana que le brinda a sus clientes una plataforma de pagos electrónicos para recibir y efectuar depósitos vía el SPEI con la finalidad de eficientar los procesos de tesorería de empresas y personas con actividad empresarial y profesional.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 2,
+        "fields": {
+            "question": "¿Por qué elegir DyP?",
+            "answer": "Elige DyP porque a través de nuestra plataforma de pagos puedes llevar a cabo:Programación de pagos por personal sin autorización para ejecutarlos. Ejecución de pagos previamente capturados cuando se tiene la autorización.Dispersión masiva de pagos, a través de nuestra plataforma web.Validación de cuentas CLABE de pago, para asegurar que se liquida al titular de la cuenta y se reducen riesgos de pagar a cuentas en listas restringidas.Disponibilidad de los recursos 24/7.Liquidación inmediata de los recursos.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 3,
+        "fields": {
+            "question": "¿Es seguro usar los productos y servicios de Depósitos y Pagos Digitales? ",
+            "answer": "Sí, es seguro. Depósitos y Pagos Digitales, S.A.P.I. de C.V., Institución de Fondos de Pago Electrónico (en adelante 'DyP') es una Institución de Tecnología Financiera que se encuentra autorizada, regulada y supervisada por las autoridades financieras de México, de conformidad con la Ley para Regular las Instituciones de Tecnología Financiera.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 4,
+        "fields": {
+            "question": "¿Mi dinero está garantizado por el gobierno? ",
+            "answer": "El Gobierno Federal y las Entidades de la Administración Pública Paraestatal no podrán responsabilizarse o garantizar los recursos de los usuarios que sean utilizados en las operaciones que celebren los Usuarios con DyP o frente a otros, ni asumir alguna responsabilidad por las obligaciones contraídas por DyP o por algún usuario de esta frente a otro, en virtud de las operaciones que celebren.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 5,
+        "fields": {
+            "question": "¿Cómo puedo abrir una cuenta en DyP? ",
+            "answer": "Accede en la opción Regístrate gratis e inicia el proceso de apertura de cuenta. Ingresa un correo electrónico y contraseña. Posteriormente indícanos si eres una persona física o una persona moral, te preguntaremos algunas cosas sobre ti, todo con el fin de cuidar la seguridad de tus operaciones.Todo el proceso es muy sencillo, basta con seguir las instrucciones en pantalla. Si necesitas ayuda, siempre puedes llamar totalmente gratis al Centro de Atención a Usuarios de DyP en el 800 110 90 90. ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 6,
+        "fields": {
+            "question": "¿Cuáles comisiones se cobran en  DyP?",
+            "answer": "Te puedes referir al apartado “Términos y Condiciones” en nuestra página de Internet (acá la liga). En principio, cobramos una cuota mensual de mantenimiento de la cuenta, no cobramos por recibir depósitos y sí cobramos por cada retiro que efectúes vía el SPEI.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 7,
+        "fields": {
+            "question": "¿Los saldos que se mantienen en  DyP pagan intereses?",
+            "answer": "No, las IFPEs no tenemos permitido pagar intereses, de acuerdo con lo establecido por la Ley para Regular las Instituciones de Tecnología Financiera.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 8,
+        "fields": {
+            "question": "¿Qué hago si no reconozco una operación? ",
+            "answer": "Contacta inmediatamente a nuestro centro de atención a clientes. Atención telefónica: 800 110 9090 o al Correo electrónico: clientes@depositosypagos.com",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 9,
+        "fields": {
+            "question": "¿Cómo deposito a mi cuenta?",
+            "answer": "Realiza una transferencia electrónica (SPEI) desde tu banca electrónica, coloca a (DyP) como entidad financiera receptora y tu nombre y cuenta CLABE como beneficiario.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 10,
+        "fields": {
+            "question": "¿Cómo recibo depósitos a mi cuenta? ",
+            "answer": "Proporciona tu cuenta CLABE DyP a las personas que desees te depositen a través del SPEI.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 11,
+        "fields": {
+            "question": "Si yo transfiero a mi cuenta en DyP,  ¿En cuánto tiempo puedo ver reflejado mi depósito? ",
+            "answer": "Dependerá de la institución bancaria desde la que realizaste el pago, cada banco tiene un tiempo establecido para autorizar transferencias. En caso de no ver reflejado tu pago de inmediato, cierra tu sesión y vuelve a iniciar. *Recuerda que siempre puedes consultar el estatus de una operación en Banxico® https://www.banxico.org.mx/cep/ ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 12,
+        "fields": {
+            "question": "¿Para qué sirven los perfiles de usuario en la plataforma de DyP? ",
+            "answer": "Distintos perfiles de usuarios aseguran que sólo el administrador de la cuenta y/o el tesorero puedan efectuar pagos. Para mejorar la productividad de la empresa, se puede permitir acceso a empleados con perfiles como: Capturista: puede capturar y programar pagos, pero no ejecutarlos Analista: puede consultar información y descargar reportes, pero no puede capturar ni programar ni ejecutar pagos. ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 13,
+        "fields": {
+            "question": "¿DyP tiene sucursales?  ",
+            "answer": "No, DyP es una Fintech que opera 100% digital.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 14,
+        "fields": {
+            "question": "¿En dónde se ubica la unidad especializada de Atención a Clientes de DyP?",
+            "answer": "Nuestra unidad se encuentra ubicada en: Av. P.º de la Reforma 255-Piso 14 A, Cuauhtémoc, 06500 Ciudad de México, CDMX. O contáctanos a través de Número de teléfono: 800 110 9090 o al Correo electrónico: clientes@depositosypagos.com ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 15,
+        "fields": {
+            "question": "¿Qué es el SPEI?",
+            "answer": "SPEI es un sistema desarrollado y operado por el Banco de México que permite al público en general realizar en cuestión de segundos pagos electrónicos, también llamados transferencias electrónicas, a través de la banca por internet o de la banca móvil. Este sistema permite transferir dinero electrónicamente entre cuentas de depósito de los bancos de manera casi instantánea. Para mas información, consulta el siguiente enlace de Banco de México: https://www.banxico.org.mx/servicios/sistema-pagos-electronicos-in.html  ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 16,
+        "fields": {
+            "question": "¿Qué seguridad hay en el SPEI?",
+            "answer": "Hacer pagos a través del SPEI es muy seguro pues estas operaciones se realizan a través de un ambiente o red privada y protegida. Además, el servicio de banca por internet o el servicio de pagos móviles requieren el uso de un dispositivo de seguridad el cual puede ser un token o una tarjeta de seguridad, lo que te garantiza que sólo tú puedas realizar operaciones a través de estos servicios. De cualquier forma, cuando uses el servicio del SPEI a través del portal de DYPD te recomendamos lo siguiente: Realiza tus pagos o transferencias desde tu casa; evita los sitios que ofrecen internet público como bibliotecas, escuelas o cafeterías. Al entrar al portal de DYPD, revisa que tu conexión sea segura (verificando que la dirección electrónica comience con “https” o que aparezca un símbolo de candado). Mantén actualizado tu equipo y utiliza antivirus. Evita usar contraseñas fáciles de adivinar como tu nombre o fecha de cumpleaños y no las compartas con nadie.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 17,
+        "fields": {
+            "question": "¿A qué instancia puedo acudir en caso de no obtener una respuesta satisfactoria a mi consulta, aclaración o reclamación?",
+            "answer": "En el caso de no obtener una respuesta satisfactoria, podrá acudir a la Comisión Nacional para la Protección y Defensa de los Usuarios de Servicios Financieros a través de su página web: https://www.condusef.gob.mx/ o a los números 55 53 400 999 / 01 800 999 8080.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 18,
+        "fields": {
+            "question": "¿Cómo puedo consultar el saldo de mi cuenta? ",
+            "answer": "Cuando tengas tu usuario y contraseña, ingresa a la plataforma confirmando tu identidad con el doble factor de autenticación, y selecciona la pestaña “Tablero”. Ahí encontrarás la información del saldo de tu cuenta (o, en su caso, cuentas)..",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 19,
+        "fields": {
+            "question": "¿Dónde puedo consultar mis estados de cuenta? ",
+            "answer": "Cuando tengas tu usuario y contraseña, ingresa a la plataforma confirmando tu identidad con el doble factor de autenticación, y selecciona la pestaña “Herramientas”. Ahí encontrarás la sección de “estados de cuenta”, donde podrás consultar los últimos 12 estados de cuenta mensuales. ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 20,
+        "fields": {
+            "question": "¿Qué es el Código de verificación 2FA?",
+            "answer": "2FA es una forma eficaz de garantizar que una organización o una persona no sea víctima de un ciberataque o un hacker. 2FA utiliza códigos de acceso o generadores de tokens sujetos a limitaciones temporales para prevenir el robo de identidades y la pérdida de datos.",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 21,
+        "fields": {
+            "question": "¿Qué hago si perdí mi dispositivo móvil? ",
+            "answer": "Contacta inmediatamente a nuestro centro de atención a clientes.Atención telefónica: 800 110 9090 o al Correo electrónico: clientes@depositosypagos.com ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 22,
+        "fields": {
+            "question": "¿Qué riesgos existen al operar con una IFPE? ",
+            "answer": "Riesgos por el uso de la red denominada Internet: Existen riesgos asociados al uso de una aplicación de software para ejecución de operaciones en línea. DyP, como proveedor del software, no tiene el control sobre la calidad de la señal de comunicaciones, la cobertura, el direccionamiento del servicio de internet, la latencia de la red, la configuración del equipo que utilizan sus clientes para conectar su equipo al portal de DyP, ni la fiabilidad de su conexión a internet. DyP no es responsable de errores de comunicación por mala o baja señal de internet o por intermitencias en las comunicaciones.. DyP emplea sistemas de copia de seguridad y planes de contingencia para minimizar la posibilidad de un error del sistema. Riesgo de Hackeo: El “hackeo” es un proceso malintencionado llevado a cabo por terceros que consiste en obtener acceso a sistemas informáticos, cuentas personales, dispositivos digitales o redes de ordenadores. Para lograrlo, los hackers usan diferentes técnicas como aprovecharse de la vulnerabilidad en el software, el uso de contraseñas débiles y la ingeniería social para obtener información confidencial. Al utilizar la plataforma de DyP existe un riesgo de hackeo que podría causar una suspensión en el servicio, o la imposibilidad de entrar a su cuenta, o la posibilidad (baja) de robo de datos personales y de fondos.Robo de identidad: Dado el riesgo existente de hackeo existe la posibilidad de robo de datos personales que podría resultar en robo de identidad.Riesgo catastrófico de pérdida de datos: Existe el riesgo de que se produzca un error catastrófico en los sistemas internos de DyP que provoque la pérdida de datos de registro de los saldos de cuentas individuales. DyP invierte constantemente en sistemas de seguridad y copia-respaldo de la información. Se busca minimizar el riesgo realizando copias de seguridad frecuentes, manteniendo sistemas de copia de seguridad y mediante planes de contingencia para reducir la posibilidad de fallos del sistema. ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 23,
+        "fields": {
+            "question": "¿Cómo puedo cancelar mi cuenta DyP? ",
+            "answer": "Sentimos mucho escuchar que quieres cancelar tu cuenta, contáctanos a través del centro de atención a clientes: Atención telefónica: 800 110 9090 o al Correo electrónico: clientes@depositosypagos.com ",
+            "is_active": true
+        }
+    },
+    {
+        "model": "webApp.frequentquestions",
+        "pk": 24,
+        "fields": {
+            "question": "¿Quién tiene acceso y cómo se protegen tus datos personales? ",
+            "answer": "DyP es la entidad responsable del tratamiento de los datos personales que se recolectan a través de su plataforma, página de internet y medios electrónicos de contacto y/o soporte al cliente. Los datos personales que se recaban son utilizados con la finalidad de proporcionar, mantener y mejorar nuestros servicios financieros; y podrá realizar transferencias de datos únicamente con las empresas integrantes de su mismo grupo empresarial, con los terceros y autoridades referidos en el Aviso de Privacidad únicamente a fin de dar cumplimiento a la regulación aplicable a las Instituciones de Fondos de Pago Electrónico. DyP no venderá, cederá o transferirá los datos personales del cliente o usuario a terceros ajenos a la empresa, sus filiales, subsidiarias y partes relacionadas, o terceros distintos a los anteriormente mencionados sin su consentimiento previo. Si desea conocer nuestro Aviso de Privacidad integral, lo podrá consultar en la siguiente dirección electrónica: acá poner el link. ",
+            "is_active": true
+        }
+    } 
+]

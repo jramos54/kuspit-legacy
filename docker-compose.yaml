@@ -1,0 +1,55 @@
+#version: '3'
+#
+#services:
+#
+#  dyp:
+#    build: .
+#    command: gunicorn --bind :8000 --workers 4 --threads 4 --timeout 30 configuracion.wsgi:application
+#    ports:
+#      - "8000:8000"
+#    env_file:
+#      - .env
+
+version: '3'
+
+services:
+  dyp:
+    build: .
+    command: gunicorn --bind :8000 --workers 4 --threads 4 --timeout 30 configuracion.wsgi:application
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - celery
+    volumes:
+      - .:/app
+      - ./staticfiles:/app/staticfiles
+    networks:
+      - app_network
+
+  redis:
+    image: redis:6.0-alpine
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+  celery:
+    build: .
+    command: celery -A celery_app worker --loglevel=info --pool=threads --concurrency=4
+    depends_on:
+      - redis
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+

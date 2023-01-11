@@ -1,108 +1,128 @@
-# API django_assesment
-En este proyecto se implementa una API REST con arquitectura hexagonal y desarrollo basado en unittest de compoortamieto.
+# API DyP
 
-## Clonar repositorio
+Este proyecto implementa una API REST con arquitectura hexagonal, siguiendo las mejores prácticas de desarrollo basado en pruebas unitarias (TDD) y pruebas de comportamiento (BDD). 
 
+## Características principales
+
+- **Base de Datos:** PostgreSQL con soporte para PostGIS.
+- **Arquitectura:** Hexagonal.
+- **Pruebas:** Desarrollo basado en pruebas unitarias y de comportamiento.
+- **Integración:** Documentación generada automáticamente con Swagger.
+
+## Repositorio
+
+Clona el repositorio utilizando el siguiente comando:
+
+```bash
+git clone https://github.com/AdminDyP/kuspit-payroll-system-back.git
 ```
-git clone https://github.com/nxiodev/django_arq_hex_example
+## Requisitos Previos
+
+Asegúrate de tener los siguientes componentes instalados en tu sistema:
+
+- **Python 3.10+**
+- **PostgreSQL 13+**
+- **Docker y Docker Compose**
+- **Virtualenv** (opcional)
+- **Redis** para la gestión de tareas en segundo plano.
+
+Para entornos de desarrollo:
+
+- **Linux/Mac:** Preinstalado con muchas distribuciones modernas.
+- **Windows:** Utiliza `choco` para instalar herramientas adicionales, como Make y Redis (instrucciones detalladas más adelante).
+
+## Configuración del Entorno Local
+
+1. **Crear y activar un entorno virtual**:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Linux/Mac
+   venv\Scripts\activate     # Windows
+   ```
+2. **Instalar dependencias del proyecto**:   
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. **Configurar el archivo .env**:
+
+En la carpeta raíz del proyecto, crea un archivo .env con el siguiente contenido:
+   ```bash
+   
+   DEBUG=True
+   SECRET_KEY='TuClaveSecreta'
+   ALLOWED_HOSTS=*
+   CORS_ORIGIN_WHITELIST=http://localhost:3000,http://localhost:8000,http://localhost:8080
+   
+   # Base de Datos
+   DB_USER=postgres
+   DB_PASSWORD=1234
+   DB_HOST=127.0.0.1
+   DB_PORT=5432
+   DB_NAME=dyp-db
+   DB_ENGINE=django.contrib.gis.db.backends.postgis
+   
+   # Redis y Celery
+   REDIS_URL=redis://127.0.0.1:6379/0
+   CELERY_BROKER_URL=redis://127.0.0.1:6379/0
+   CELERY_RESULT_BACKEND=redis://127.0.0.1:6379/0
+   ```
+Nota: Ajusta los valores según tu configuración local o de Docker.
+
+## Inicialización de la Base de Datos
+
+1. **Crear la base de datos en PostgreSQL**:
+
+2. **Conéctate a PostgreSQL y ejecuta**:
+
+   ```sql
+   CREATE DATABASE "dyp-db";
+   ```
+3. **Ejecutar migraciones**:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+   ```
+4. **Cargar datos de prueba (fixtures)**:
+```bash
+python manage.py loaddata fixtures/data.json
+   ```
+5. **Iniciar el servidor**:
+```bash
+python manage.py runserver
+   ```
+Accede a la API en http://localhost:8000.
+
+## Desplegar el Proyecto con Docker
+
+1. **Construir la imagen del proyecto**:
+
+   ```bash
+   docker compose build
+   ```
+2. **Levantar los contenedores**:
+
+   ```bash
+   docker compose up -d
+      ```
+3. **Configurar PostGIS en la base de datos**:
+
+Accede al contenedor de PostgreSQL:
+```bash
+docker exec -it <id_container_db> bash
 ```
-
-## Bases de datos:
-- **PostgreSQL** : Se utiliza para almacenar la información interna de la aplicación
-
-`NOTA: De acuerdo a lo propuesto en la HU_SPRINT.md se genera un diagrama de entidad relación en un png`
-
-## Desplegar proyecto
-
-1. Crea tu ambiente virtual ejecuta el siguiente comando
-
-   ```ssh
-   py -m venv venv;
-   venv\Scripts\activate
-   ```
-
-2. Instala las dependencias del proyecto
-
-   ```ssh
-    pip install -r requirements.txt
-    ```
-
-3. Crear una base de datos paycode-db en postgres y situate en la carpeta django_test para crear tu archivo .env
-   ```ssh
-    DEBUG=True
-    SECRET_KEY='11111111111818181818181811111111'
-    ALLOWED_HOSTS=*
-    CORS_ORIGIN_WHITELIST=http://localhost:3000,http://localhost:8000,http://localhost:8080
-    
-    
-    DB_USER=
-    DB_PASSWORD=
-    DB_HOST=127.0.0.1
-    DB_PORT=5432
-    DB_NAME=paycode-db
-    DB_ENGINE=django.db.backends.postgresql_psycopg2
-
-   ```
-   `NOTA: Usa tu usuario y contraseña de postgres`
-4. En la misma carpeta ejecuta las migraciones
-
-   ```ssh
-   python manage.py makemigrations;
-   python manage.py migrate
-   ```
-5. Ahora instala los fixtures para el dummy data
-
-   ```ssh
-   python .\manage.py loaddata .\fixtures\data.json
-   ```
-   
-6. Inicia el servidor
-
-   ```ssh
-    python .\manage.py runserver
-    ```
-   
-   
-### Info del proyecto
-
-Este proyecto fue desarrollado basado en una practica la cuál es generar contratos para el backend y front end los cuales
-pérmitan de manera sencilla la integración de los servicios y la comunicación entre los mismos.
-
-Se generó un documento contratos_sprint.md el cual contiene los contratos de los servicios que se implementaron en el proyecto.
-También se generó un diagrama entidad relación en el archivo diagrama ER.png
-El proyecto cuenta con dos usuarios cargados en los fixtures.
-Los usuarios tienen dos perfiles, super_administrator y administrator.
-
-- **super_administrator** : Puede crear, editar y eliminar clientes y pagos de clientes
-- **administrator** : Solo puede ver los clientes y pagos de clientes
-
-Las credenciales de cada uno son las siguientes:
-
-- **super_administrator** :
-  - email: dj-superadmin@paycode.io 
-  - password: admin123
-- **administrator** :
-  - email: dj-admin@paycode.io
-  - password: admin123
-
-
-La api está documentada en el url:
-
-http://localhost:8000/api/swagger/
-
-usa el servicio de token/ para obtener el token de autenticación y usa el token en el Authorize con la palabra Bearer antes del token.
-
-`EJEMPLO: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY5ODQ4MDQwLCJpYXQiOjE2Njk4NDc3NDAsImp0aSI6IjQwYTQ0MGRkYTk1MjRjYTliYmRlNTUwODMzZjYwMGQwIiwidXNlcl9pZCI6MX0.11mvl3StKfxX0hwKVHXzgSdlI0TUN7kJEEVPeaeLdYg`
-
-### Ejecutar pruebas
-
-Para ejecutar las pruebas unitarias ejecuta el siguiente comando
-
-```ssh
-python .\manage.py test
+Instala PostGIS:
+```bash
+apt-get update && apt-get install -y postgis
 ```
+Crea la extensión:
+```bash
+CREATE EXTENSION postgis;
+```
+4. **Ejecutar migraciones en el contenedor de la API**:
 
-
-
-
-
+```bash
+docker exec -it <id_container_api> bash
+python manage.py makemigrations
+python manage.py migrate
+```
