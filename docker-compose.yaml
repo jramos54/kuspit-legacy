@@ -45,7 +45,7 @@ services:
     volumes:
       - .:/app
     env_file:
-      - .env
+      - /var/lib/jenkins/environment_variables/.env
     networks:
       - app_network
 
