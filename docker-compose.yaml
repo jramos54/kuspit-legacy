@@ -19,7 +19,7 @@ services:
     ports:
       - "8000:8000"
     env_file:
-      - .env
+      -  /var/lib/jenkins/environment_variables/.env
     depends_on:
       - redis
       - celery
