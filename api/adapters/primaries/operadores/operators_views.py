@@ -23,6 +23,11 @@ from drf_yasg import openapi
 
 # Proyecto
 from . import operators_serializer
+from .swagger_docs import (list_operators_docs,
+                           create_operator_docs,
+                           update_operator_access_docs,
+                           assign_revoke_operator_role_docs,
+                           list_available_roles_docs)
 from apps.backoffice.models.roles_model import RolesGroups
 
 
@@ -67,14 +72,7 @@ class OperatorsViewSet(viewsets.GenericViewSet):
             self.permission_classes = [IsSuperUserOrClient | IsAdmin]
         return super().get_permissions()
 
-    @swagger_auto_schema(
-        request_body=operators_serializer.NuevoOperadorSerializer(),
-        responses={
-            status.HTTP_200_OK: operators_serializer.OperatorSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Operadores/Perfiles']
-    )
+    @create_operator_docs
     def create_operator(self, request) -> Response:
         """Crear un nuevo destinatario"""
         data_serializer = operators_serializer.NuevoOperadorSerializer(data=request.data)
@@ -143,17 +141,7 @@ class OperatorsViewSet(viewsets.GenericViewSet):
             }
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Asignar o revocar acceso del operador a la cuenta",
-        operation_description="",
-        request_body=operators_serializer.OperatorSerializer(),
-        query_serializer=operators_serializer.OperatorQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: operators_serializer.OperatorSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Operadores/Perfiles']
-    )
+    @update_operator_access_docs
     def grant_access(self, request) -> Response:
         """Update a recipient"""
         data_serializer = operators_serializer.OperatorQueryParamSerializer(data=request.query_params)
@@ -197,15 +185,7 @@ class OperatorsViewSet(viewsets.GenericViewSet):
             }
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Listar los operadores y rol en la cuenta",
-        operation_description="Se listan los operadores por idoperador o todos los registrados en la cuenta",
-        responses={
-            status.HTTP_200_OK: operators_serializer.OperatorSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Operadores/Perfiles']
-    )
+    @list_operators_docs
     def show_operator(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -274,18 +254,7 @@ class OperatorsViewSet(viewsets.GenericViewSet):
             response_data = {"detail": "Operadores no encontrados", "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Asignar o revocar roles a un operador",
-        operation_description="Este endpoint permite asignar o revocar roles a un operador específico dentro del sistema.",
-        request_body=operators_serializer.OperatorQueryParamSerializer,
-        responses={
-            status.HTTP_200_OK: operators_serializer.OperatorSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-            status.HTTP_403_FORBIDDEN: openapi.Response(description="Operator not found")
-        },
-        tags=['Operadores/Perfiles']
-
-    )
+    @assign_revoke_operator_role_docs
     def assign_roles(self, request) -> Response:
         """Asignar o revocar roles a un operador"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -344,17 +313,7 @@ class OperatorsViewSet(viewsets.GenericViewSet):
             response_data = {"detail": "No se pude asignar un rol al Operador", "data":error_exception }
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Listar los roles disponibles",
-        operation_description="Lista los roles disponibles",
-        responses={
-            status.HTTP_200_OK: operators_serializer.RolesGroupsSerializer,
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-            status.HTTP_403_FORBIDDEN: openapi.Response(description="Operator not found")
-        },
-        tags=['Operadores/Perfiles']
-
-    )
+    @list_available_roles_docs
     def list_roles(self, request) -> Response:
         """Asignar o revocar roles a un operador"""
         roles_group=RolesGroups.objects.all()
@@ -385,21 +344,3 @@ class OperatorsViewSet(viewsets.GenericViewSet):
             print(f"Usuario con email {email} no encontrado")
         except Exception as e:
             print(f"Error actualizando los grupos del usuario: {str(e)}")
-
-    # def get_user_dashboard(self,token) -> Response:
-    #     """List recipients"""
-    #
-    #     try:
-    #         user_dashboard_openfin = users_dashboard_engine.get_user_dashboard(
-    #              token=token
-    #         )
-    #
-    #         data=user_dashboard_openfin.__dict__
-    #         self.username=data.get("nombre")
-    #         self.user_email=data.get("correo")
-    #
-    #     except Exception as error_exception:
-    #         print(error_exception)
-    #         response_data = {"detail": "Usuario no encontrado", "data": ""}
-    #         return response_data
-

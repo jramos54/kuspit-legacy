@@ -42,7 +42,7 @@ class SpeiDiscountViewSet(viewsets.GenericViewSet):
             status.HTTP_404_NOT_FOUND: "Cuentas no encontradas",
             status.HTTP_400_BAD_REQUEST: "Error en la solicitud"
         },
-        tags=['Descuento Spei']
+        tags=['Configuración']
     )
     def aplica_descuento(self, request) -> Response:
         """Cambiar la contraseña del usuario"""

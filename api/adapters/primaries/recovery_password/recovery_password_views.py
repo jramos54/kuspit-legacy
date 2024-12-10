@@ -29,6 +29,11 @@ from ....engine.domain.exceptions import exceptions_recipient
 from ....engine.domain.messages import messages_recovery_password
 
 from . import recovery_password_serializer
+from .swagger_docs import (validate_temp_code_docs,
+                           create_new_password_docs,
+                           generate_temp_token_docs,
+                           get_security_questions_docs,
+                           submit_security_answers_docs)
 
 from ....adapters.secondaries.factory.constructor_email import constructor_user_dashboard as email_sender
 
@@ -49,17 +54,7 @@ class RecoveryPasswordViewSet(viewsets.GenericViewSet):
         self.username = None
         self.user_email = None
 
-    @swagger_auto_schema(
-        operation_summary="Generacion de token temporal",
-        operation_description="Se genera un token temporal para que el usuario pueda recuperar su contraseña",
-        request_body=recovery_password_serializer.RecoveryTokenEmailSerializer(),
-        responses={
-            status.HTTP_200_OK: recovery_password_serializer.RecoveryTokenSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Recuperacion Contraseña']
-
-    )
+    @generate_temp_token_docs
     def generate_token(self, request) -> Response:
         """Crear un nuevo destinatario"""
 
@@ -124,16 +119,7 @@ class RecoveryPasswordViewSet(viewsets.GenericViewSet):
             print(error_exception)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Obtencion de preguntas",
-        operation_description="Se obtienen las preguntas que el usuario debe responder para recuperar su contraseña",
-        responses={
-            status.HTTP_200_OK: recovery_password_serializer.RecoveryTokenSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Recuperacion Contraseña']
-
-    )
+    @get_security_questions_docs
     def get_questions(self, request) -> Response:
         """Crear un nuevo destinatario"""
 
@@ -178,16 +164,7 @@ class RecoveryPasswordViewSet(viewsets.GenericViewSet):
             print(error_exception)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Envio de respuestas a preguntas",
-        operation_description="Se envian las respuestas a las preguntas generadas para la recuperacion de la contraseña",
-        request_body=recovery_password_serializer.RecoveryTokenEmailSerializer(),
-        responses={
-            status.HTTP_200_OK: recovery_password_serializer.RecoveryTokenSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Recuperacion Contraseña']
-    )
+    @submit_security_answers_docs
     def send_answers(self, request) -> Response:
         """Crear un nuevo destinatario"""
 
@@ -260,17 +237,7 @@ class RecoveryPasswordViewSet(viewsets.GenericViewSet):
             }
             return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Servicio para creacion de nueva contraseña",
-        operation_description="Servicio para la creacion de nueva contraseña",
-        request_body=recovery_password_serializer.RecoveryTokenEmailSerializer(),
-        responses={
-            status.HTTP_200_OK: recovery_password_serializer.RecoveryTokenSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Recuperacion Contraseña']
-
-    )
+    @create_new_password_docs
     def new_password(self, request) -> Response:
         """Cambiar la contraseña del usuario"""
 
@@ -317,16 +284,7 @@ class RecoveryPasswordViewSet(viewsets.GenericViewSet):
         else:
             return Response({"detail": "No se pudo cambiar la contraseña en OpenFin."}, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Validacion del codigo temporal",
-        operation_description="Se valida el codigo temporal de la recuperacion de la contraseña",
-        request_body=recovery_password_serializer.RecoveryTokenEmailSerializer(),
-        responses={
-            status.HTTP_200_OK: recovery_password_serializer.RecoveryTokenSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Recuperacion Contraseña']
-    )
+    @validate_temp_code_docs
     def validate_code(self, request) -> Response:
         """Validar el código temporal"""
 

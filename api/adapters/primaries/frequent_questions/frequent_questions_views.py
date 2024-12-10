@@ -22,6 +22,9 @@ from ....adapters.secondaries.factory import (
 from ....engine.domain.exceptions import exceptions_frequent_questions as exceptions
 from ....engine.use_cases import factory as frequent_questions_engine
 from . import frequent_questions_serializers
+from .swagger_docs import (list_frequent_questions_docs,
+                           create_frequent_question_docs,
+                           update_frequent_question_docs)
 
 # Frequent questions engine implementation
 frequent_questions_repository = frequent_questions_repo.constructor_frequent_questions(
@@ -39,17 +42,7 @@ class FrequentQuestionsViewSet(viewsets.GenericViewSet):
 
     serializer_class = frequent_questions_serializers.FrequentQuestionsSerializer
 
-    @swagger_auto_schema(
-        operation_summary="Lista las preguntas frecuentes",
-        operation_description="Listado de preuntas frecuentes activas",
-        query_serializer=frequent_questions_serializers.FrequentQuestionsQueryParamsSerializer(),
-        responses={
-            status.HTTP_200_OK: frequent_questions_serializers.FrequentQuestionsSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Preguntas Frecuentes']
-
-    )
+    @list_frequent_questions_docs
     def list_frequent_questions(self, request):
         """list/Retrieve frequent questions service"""
         query_params = request.query_params
@@ -100,17 +93,7 @@ class FrequentQuestionsAuthViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     serializer_class = frequent_questions_serializers.FrequentQuestionsSerializer
 
-    @swagger_auto_schema(
-        operation_summary="Crear una nueva pregunta",
-        operation_description="Crea una nueva pregunta y se agrega a la base de preguntas",
-        request_body=frequent_questions_serializers.FrequentQuestionsSerializer(),
-        responses={
-            status.HTTP_200_OK: frequent_questions_serializers.FrequentQuestionsSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Preguntas Frecuentes']
-
-    )
+    @create_frequent_question_docs
     def create_frequent_questions(self, request) -> Response:
         """fuction to create one frequent question"""
         data = request.data
@@ -157,17 +140,7 @@ class FrequentQuestionsAuthViewSet(viewsets.GenericViewSet):
         }
         return Response(response_data, status=status.HTTP_201_CREATED)
 
-    @swagger_auto_schema(
-        operation_summary="Actualiza una pregunta frecuente",
-        operation_description="Actualiza el contenido de la pregunta seleccionada",
-        request_body=frequent_questions_serializers.FrequentQuestionsQueryParamsSerializer(),
-        responses={
-            status.HTTP_200_OK: frequent_questions_serializers.FrequentQuestionsQueryParamsSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Preguntas Frecuentes']
-
-    )
+    @update_frequent_question_docs
     def update_frequent_questions(self, request):
         """fuction for update a frequent question"""
         query_params_serialized = (

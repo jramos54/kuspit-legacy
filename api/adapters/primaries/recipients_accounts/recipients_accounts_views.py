@@ -19,6 +19,9 @@ from ....engine.use_cases.factory import (
 )
 from ....engine.domain.exceptions import exceptions_recipient_account
 from . import recipients_accounts_serializer
+from .swagger_docs import (create_recipient_wallet_docs,
+                           delete_recipient_wallet_docs,
+                           update_recipient_wallet_docs)
 
 recipients_account_repository = (
     recipient_account_repository.constructor_recipient_account()
@@ -37,16 +40,7 @@ class RecipientsAccountViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Crea una wallet para el destinatario",
-        operation_description="Se crea una wallet donde se envian los recusos al destinatario",
-        request_body=recipients_accounts_serializer.RecipientAccountSerializer(),
-        responses={
-            status.HTTP_200_OK: recipients_accounts_serializer.RecipientAccountSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @create_recipient_wallet_docs
     def create_recipient_account(self, request) -> Response:
         """dar de alta un recipient"""
         data = request.data
@@ -114,16 +108,7 @@ class RecipientsAccountViewSet(viewsets.GenericViewSet):
 
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Actualiza una cuenta del destinatario",
-        operation_description="Se actualizan los datos de wallet del destinatario",
-        request_body=recipients_accounts_serializer.RecipientAccountQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: recipients_accounts_serializer.RecipientAccountQueryParamSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @update_recipient_wallet_docs
     def update_recipient_account(self, request) -> Response:
         """Update a recipient"""
         query_params_serializer = (
@@ -169,16 +154,7 @@ class RecipientsAccountViewSet(viewsets.GenericViewSet):
 
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Elimina una wallet del destinatario",
-        operation_description="Se elimina la wallet de un destinatario",
-        request_body=recipients_accounts_serializer.RecipientAccountQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: recipients_accounts_serializer.RecipientAccountQueryParamSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @delete_recipient_wallet_docs
     def delete_recipient_account(self, request) -> Response:
         """Deactivate the recipient"""
         query_params_serializer = (

@@ -16,6 +16,7 @@ from django.urls import reverse
 from ....adapters.secondaries.factory import constructor_movement as movement_repository
 from ....engine.use_cases.factory import constructor_manager_movement as movement_engine
 from . import movements_serializer
+from .swagger_docs import list_wallet_movements_docs
 
 movements_repository = movement_repository.constructor_movements()
 movements_engine = movement_engine(movements_repository)
@@ -28,17 +29,7 @@ class MovementsViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Listar los movimientos de una wallet",
-        operation_description="Lista los movimientos de la wallet, se puede filtrar por tipo de movimiento, estatus y rango de fechas",
-        query_serializer=movements_serializer.QueryParamMovementsSerializer(),
-        responses={
-            status.HTTP_200_OK: movements_serializer.QueryParamMovementsSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Movimientos']
-
-    )
+    @list_wallet_movements_docs
     def list_movements_by_account(self, request):
         logger.info("-" * 30 + "Servicio de Movimientos" + "-" * 30)
         token = f"Bearer {request.user.open_fin_token}"

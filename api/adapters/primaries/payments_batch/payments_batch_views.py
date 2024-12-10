@@ -1,28 +1,24 @@
 # Local utilities
 import json, re
 from django.conf import settings
-from django.http import JsonResponse
 import ast
 from django.urls import reverse
 from django.contrib.gis.geos import Point
 from uuid import uuid4
-from redis import Redis
 import redis
 
 import os
-from drf_yasg import openapi
 from rest_framework.decorators import api_view
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from drf_yasg import openapi
 
-from compartidos.serializers import NotFoundSerializer
 from apps.backoffice.models import users as users_models
 # Librerías de Terceros
 from rest_framework.permissions import DjangoModelPermissions
-from django.contrib.auth.models import Group
-from django.contrib.auth import get_user_model
 
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from django.shortcuts import get_object_or_404
 from .tasks import upload_file_task
 from . import payments_batch_serializer
 from ....adapters.secondaries.Geolocation.geolocation_service import GeolocationService
@@ -33,9 +29,12 @@ from django.http import StreamingHttpResponse
 from ...secondaries.db_open_fin.repository_implementation_payments_batch_openfin import \
     PaymentsBatchImplementation
 
-
-# Django REST Framework
-from drf_yasg.utils import swagger_auto_schema
+from .swagger_docs import (list_batch_payment_details_docs,
+                           list_uploaded_files_docs,
+                           apply_batch_payment_docs,
+                           get_batch_progress_docs,
+                           upload_batch_payment_file_docs
+                           )
 
 open_fin = PaymentsBatchImplementation()
 redis_url_0 = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
@@ -50,16 +49,7 @@ class FilePaymentsUploadView(viewsets.GenericViewSet):
     queryset = users_models.User.objects.all()
     geolocation_service = GeolocationService()
 
-    @swagger_auto_schema(
-        operation_summary="Servicio para carga masiva de pagos",
-        operation_description="Acepta un archivo csv con los datos para cargar",
-        # query_serializer=recipients_batch_serializer.FileContentSerializer(),
-        responses={
-            status.HTTP_202_ACCEPTED: "Archivo recibido y en proceso.",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Pagos"]
-    )
+    @upload_batch_payment_file_docs
     def upload_file(self, request) -> Response:
         """Upload recipients file"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -104,16 +94,7 @@ class FilePaymentsUploadView(viewsets.GenericViewSet):
 
         return Response({"task_id": task_id}, status=202)
 
-    @swagger_auto_schema(
-        operation_summary="Muestra los archivo cargados por el usuario",
-        operation_description="Lista todos los archivos que se han cargado en la plataforma",
-        # query_serializer=user_dashboard_serializer.UserDashboardSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Pagos"]
-    )
+    @list_uploaded_files_docs
     def get_uploaded_files(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -142,16 +123,7 @@ class FilePaymentsUploadView(viewsets.GenericViewSet):
             response_data = {"detail": str(error_exception), "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Muestra el detalle de la carga masiva",
-        operation_description="Lista los campos y detalle de la carga masiva",
-        query_serializer=payments_batch_serializer.QueryIdSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Pagos"]
-    )
+    @list_batch_payment_details_docs
     def get_file_details(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -184,16 +156,7 @@ class FilePaymentsUploadView(viewsets.GenericViewSet):
             response_data = {"detail": str(error_exception), "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Aplica los datos de la carga masiva",
-        operation_description="Se guardan en el listado de pagos los datos cargados",
-        query_serializer=payments_batch_serializer.QueryIdSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Pagos"]
-    )
+    @apply_batch_payment_docs
     def apply_file_recipients(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -277,18 +240,7 @@ def event_stream(task_id):
             except Exception as e:
                 print(f"Error processing message: {e}")
 
-@swagger_auto_schema(
-    method='get',
-    operation_summary="Obtener progreso de la carga de archivo",
-    operation_description="Obtiene el progreso de la carga y procesamiento del archivo basado en el task_id.",
-    responses={
-        status.HTTP_200_OK: openapi.Response(
-            description="Progreso del archivo",
-        ),
-        status.HTTP_404_NOT_FOUND: "Task ID no encontrado",
-    },
-    tags=["Carga Masiva Pagos"]
-)
+@get_batch_progress_docs
 @api_view(['GET'])
 def file_progress_updates(request, task_id):
     print(f"Checking final message in Redis for task_id: {task_id}")

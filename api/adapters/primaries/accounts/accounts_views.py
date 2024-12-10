@@ -1,7 +1,4 @@
 """views for account service"""
-# Local utilities
-from compartidos.serializers import NotFoundSerializer
-
 # Database imports
 from apps.backoffice.models import users as users_models
 
@@ -11,9 +8,6 @@ from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 
-# Third party libraries
-from drf_yasg.utils import swagger_auto_schema
-
 # Proyecto
 # engine imports
 from ....adapters.secondaries.factory import constructor_account as account_repository
@@ -21,6 +15,7 @@ from ....adapters.secondaries.factory import constructor_users as users_repo
 from ....engine.use_cases import factory as account_engine
 from ....engine.use_cases import factory as users_engine
 from . import accounts_serializers
+from .swagger_docs import list_wallets_docs,create_account_docs
 
 # users engine implementation
 users_repository = users_repo.constructor_users(users_models.User)
@@ -37,17 +32,7 @@ class AccountsViewSet(viewsets.GenericViewSet):
     serializer_class = accounts_serializers.AccountsSerializer
     permission_classes = [DjangoModelPermissions]
 
-    @swagger_auto_schema(
-        operation_summary="Creacion de una nueva wallet asociada al usuario",
-        operation_description="Solicitud de la creacion de una nueva wallet para que se asocie con el usuario",
-        request_body=accounts_serializers.AccountsSerializer(),
-        responses={
-            status.HTTP_200_OK: accounts_serializers.AccountsSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Wallets/Cuentas']
-
-    )
+    @create_account_docs
     def create_account(self, request) -> Response:
         """opening account services"""
         data = request.data
@@ -85,17 +70,7 @@ class AccountsViewSet(viewsets.GenericViewSet):
             print(e)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Listar las wallets de la cuenta del usuario",
-        operation_description="Lista las wallets asociadas al usuario para enviar o recibir recursos",
-        query_serializer=accounts_serializers.AccountsQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: accounts_serializers.AccountsSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Wallets/Cuentas']
-
-    )
+    @list_wallets_docs
     def list_accounts(self, request):
         """List/Retrieve account service"""
         token_openfin = request.user.open_fin_token

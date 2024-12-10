@@ -1,7 +1,6 @@
 # Librerias Estandar
 import re
 
-from compartidos.location_swagger_doc import location_header
 from compartidos.serializers import NotFoundSerializer
 from apps.backoffice.models import users as users_models
 
@@ -20,6 +19,8 @@ from ....adapters.secondaries.factory import constructor_users as users_repo
 from ....engine.domain.exceptions import exceptions_users as exceptions
 from ....engine.use_cases import factory as users_engine
 from . import users_serializer
+from .swagger_docs import (create_user_docs,
+                           profile_detail_docs)
 
 # users engine implementation
 users_repository = users_repo.constructor_users(users_models.User)
@@ -36,13 +37,7 @@ class PermissionsViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        manual_parameters=[location_header],
-        responses={
-            status.HTTP_200_OK: users_serializer.AdministratorsProfileSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-    )
+    @profile_detail_docs
     def profile_detail(self, request) -> Response:
         user = request.user
         groups = user.groups.prefetch_related("permissions")
@@ -78,13 +73,7 @@ class PermissionsViewSet(viewsets.GenericViewSet):
 
         return Response(data=profile_serialized.data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(
-        request_body=users_serializer.BaseUserSerializer,
-        responses={
-            status.HTTP_201_CREATED: users_serializer.BaseUserSerializer(),
-            status.HTTP_400_BAD_REQUEST: NotFoundSerializer,
-        },
-    )
+    @create_user_docs
     def create_user(self, request) -> Response:
         user_serialized = users_serializer.NewUserSerializer(data=request.data)
         user_serialized.is_valid(raise_exception=True)

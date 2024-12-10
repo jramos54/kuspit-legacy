@@ -22,7 +22,6 @@ from ....engine.domain.exceptions import exceptions_users as exceptions
 from ....engine.domain.messages import messages_users
 from apps.backoffice.models import users as users_models
 
-
 from ....adapters.secondaries.factory.constructor_email import constructor_user_dashboard as email_sender
 
 

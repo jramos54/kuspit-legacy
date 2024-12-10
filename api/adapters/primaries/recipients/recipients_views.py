@@ -1,10 +1,8 @@
 # Local utilities
 import json
 
-from compartidos.serializers import NotFoundSerializer
 from apps.backoffice.models import users as users_models
 from django.urls import reverse
-
 
 # Librerías de Terceros
 from rest_framework.permissions import DjangoModelPermissions
@@ -12,7 +10,6 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 
 # Django REST Framework
-from drf_yasg.utils import swagger_auto_schema
 from django.contrib.gis.geos import Point
 
 # Proyecto
@@ -26,6 +23,10 @@ from ....engine.domain.exceptions import exceptions_recipient
 from ....engine.domain.messages import messages_recipients
 
 from . import recipients_serializer
+from .swagger_docs import (list_recipients_docs,
+                           delete_recipient_docs,
+                           create_recipient_docs,
+                           update_recipient_docs)
 
 from ....adapters.secondaries.factory import (
     constructor_user_dashboard as user_dashboard_repository,
@@ -61,16 +62,7 @@ class RecipientsViewSet(viewsets.GenericViewSet):
         self.username = None
         self.user_email = None
 
-    @swagger_auto_schema(
-        operation_summary="Creacion de un destinatario nuevo",
-        operation_description="Se realiza el alta de un destinatario en la cuenta",
-        request_body=recipients_serializer.DestinatarioSerializer(),
-        responses={
-            status.HTTP_200_OK: recipients_serializer.RecipientSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @create_recipient_docs
     def create_recipient(self, request) -> Response:
         """Crear un nuevo destinatario"""
 
@@ -172,17 +164,7 @@ class RecipientsViewSet(viewsets.GenericViewSet):
             print(error_exception)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Actualizacion de un destinatario existente",
-        operation_description="Se realiza la actualizacion de datos de un destinatario existente",
-        request_body=recipients_serializer.RecipientSerializer(),
-        query_serializer=recipients_serializer.RecipientQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: recipients_serializer.RecipientQueryParamSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @update_recipient_docs
     def update_recipient(self, request) -> Response:
         """Update a recipient"""
         data_serializer = recipients_serializer.RecipientGeolocationSerializer(data=request.data)
@@ -259,16 +241,7 @@ class RecipientsViewSet(viewsets.GenericViewSet):
             print(error_exception)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Elimina un destinatario existente",
-        operation_description="Se realiza la eliminacion de un destinatario en la cuenta",
-        request_body=recipients_serializer.RecipientQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: recipients_serializer.RecipientQueryParamSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @delete_recipient_docs
     def delete_recipient(self, request) -> Response:
         """Deactivate the recipient"""
         query_params_serializer = recipients_serializer.RecipientQueryParamSerializer(
@@ -316,15 +289,7 @@ class RecipientsViewSet(viewsets.GenericViewSet):
             }
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Lista todos los destinatarios",
-        operation_description="Se realiza el alta de un destinatario en la cuenta",
-        responses={
-            status.HTTP_200_OK: recipients_serializer.RecipientSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Destinatarios']
-    )
+    @list_recipients_docs
     def list_recipients(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
