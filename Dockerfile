@@ -2,8 +2,9 @@
 FROM python:3.10-slim-buster
 
 # Set work directory
-ADD ../.. /app
+# ADD ../.. /app
 WORKDIR /app
+COPY . /app/
 
 # Set environment variables
 ENV PYTHONPATH "${PYTHONPATH}:/app"
@@ -20,6 +21,8 @@ RUN apt-get update && \
        postgresql postgis && \
     rm -rf /var/lib/apt/lists/*
 
+# RUN apt-get update && apt-get install -y mlocate && updatedb
+
 RUN export LD_LIBRARY_PATH=/usr/lib
 
 # Install requirements
@@ -33,18 +36,17 @@ RUN export GEOS_LIBRARY_PATH=$(locate libgeos_c.so)
 RUN pip cache purge
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the current directory contents into the container at /app
-COPY . /app/
-
 # Copia el script de espera y dale permisos de ejecución
 COPY wait_for_redis.sh /wait_for_redis.sh
 RUN chmod +x /wait_for_redis.sh
 
+# Collect static
+ENV DJANGO_SETTINGS_MODULE=configuracion.settings
+COPY .env /app/.env
+RUN python manage.py collectstatic --no-input
+
 # Expose port 80 for the Django application
 EXPOSE 8000
-
-# Collect static
-RUN python manage.py collectstatic --no-input
 
 # Run the application
 CMD ["gunicorn", "--bind", ":8000", "--workers", "4", "--threads" , "4" , "--timeout", "30", "configuracion.wsgi:application"]
