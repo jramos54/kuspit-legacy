@@ -1,6 +1,4 @@
 # Local utilities
-import json
-
 from compartidos.serializers import NotFoundSerializer
 from apps.backoffice.models import users as users_models
 from apps.backoffice.models.Log2fa_model import Log2FA
@@ -14,10 +12,6 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from django.shortcuts import get_object_or_404
 
-
-# Django REST Framework
-from drf_yasg.utils import swagger_auto_schema
-
 # Proyecto
 from ....adapters.secondaries.factory import (
     constructor_user_dashboard as user_dashboard_repository,
@@ -25,8 +19,11 @@ from ....adapters.secondaries.factory import (
 from ....engine.use_cases.factory import (
     constructor_manager_user_dashboard as user_dashboard_engine,
 )
-from ....engine.domain.exceptions import exceptions_recipient
 from . import user_dashboard_serializer
+from .swagger_docs import ( show_user_data_docs,
+                           get_user_by_email_docs,
+                           update_2fa_status_docs,
+                           update_new_user_status_docs)
 
 users_dashboard_repository = user_dashboard_repository.constructor_user_dashboard()
 users_dashboard_engine = user_dashboard_engine(users_dashboard_repository)
@@ -39,16 +36,7 @@ class UserDashboardViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Muestra los datos del usuario",
-        operation_description="Muestra los datos del usuario, requiere autenticacion",
-        query_serializer=user_dashboard_serializer.UserDashboardSerializer(),
-        responses={
-            status.HTTP_200_OK: user_dashboard_serializer.UserDashboardSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Dashboard de usuario"]
-    )
+    @show_user_data_docs
     def get_user_dashboard(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -113,16 +101,7 @@ class UserDashboardViewSet(viewsets.GenericViewSet):
             response_data = {"detail": str(error_exception), "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Actualiza el estatus del 2FA",
-        operation_description="Cambia el estado del 2FA",
-        query_serializer=user_dashboard_serializer.UserDashboardSerializer(),
-        responses={
-            status.HTTP_200_OK: user_dashboard_serializer.UserDashboardSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Dashboard de usuario"]
-    )
+    @update_2fa_status_docs
     def update_status_2fa(self, request) -> Response:
         """Update 2FA status"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -196,17 +175,7 @@ class UserNameViewSet(viewsets.GenericViewSet):
     serializer_class = user_dashboard_serializer.UserDashboardSerializer
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Muestra el nombre de usuario dado un email",
-        operation_description="Muestra el nombre del usuario, No se requiere autenticacion",
-        query_serializer=user_dashboard_serializer.UserDashboardSerializer(),
-        responses={
-            status.HTTP_200_OK: user_dashboard_serializer.UserDashboardSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Dashboard de usuario"]
-
-    )
+    @get_user_by_email_docs
     def get_user_by_email(self, request):
         """Get user by email and return full name"""
         email = request.query_params.get('email')
@@ -231,18 +200,7 @@ class UserNameViewSet(viewsets.GenericViewSet):
 
         return Response(data_response, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(
-        operation_summary="Actualiza el estatus del usuario si es nuevo o no",
-        operation_description="cambia el estatus del usuario, No se requiere autenticacion",
-        query_serializer=user_dashboard_serializer.UserDashboardSerializer(),
-        responses={
-            status.HTTP_200_OK: user_dashboard_serializer.UserDashboardSerializer(),
-            status.HTTP_400_BAD_REQUEST: "Se requiere el correo electrónico",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Dashboard de usuario"]
-
-    )
+    @update_new_user_status_docs
     def change_new_user(self, request):
         """Get user by email, toggle is_new_user status and return full name"""
         email = request.query_params.get('email')

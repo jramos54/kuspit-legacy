@@ -25,6 +25,9 @@ from ....adapters.secondaries.factory import constructor_users as users_repo
 from ....engine.use_cases import factory as payment_engine
 from ....engine.use_cases import factory as users_engine
 from . import payments_serializer
+from .swagger_docs import (list_payment_history_docs,
+                           create_payment_docs,
+                           delete_payment_docs)
 from ....adapters.secondaries.Geolocation.geolocation_service import GeolocationService
 from ....adapters.secondaries.Geolocation.geolocation_serializer import GeolocationSerializer
 
@@ -48,17 +51,7 @@ class PaymentsViewSet(viewsets.GenericViewSet):
 
     geolocation_service = GeolocationService()
 
-    @swagger_auto_schema(
-        operation_summary="Se genera un pago a terceros",
-        operation_description="Se prepara la generacion de pagos a terceros.",
-        request_body=payments_serializer.PaymentSerializer(),
-        responses={
-            status.HTTP_200_OK: payments_serializer.PaymentSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Pagos']
-
-    )
+    @create_payment_docs
     def create_payment(self, request) -> Response:
         """opening payment services"""
         data = request.data
@@ -118,17 +111,7 @@ class PaymentsViewSet(viewsets.GenericViewSet):
             print(e)
             return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
-    @swagger_auto_schema(
-        operation_summary="Se lista el historial de pagos",
-        operation_description="Se muestra el listado del historial de pagos",
-        query_serializer=payments_serializer.PaymentsQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: payments_serializer.OpenFinPaymentSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Pagos']
-
-    )
+    @list_payment_history_docs
     def list_payments(self, request):
         """List/Retrieve payment service"""
         token_openfin = request.user.open_fin_token
@@ -163,17 +146,7 @@ class PaymentsViewSet(viewsets.GenericViewSet):
             }
             return Response(response_data, status=status.HTTP_200_OK)
 
-    @swagger_auto_schema(
-        operation_summary="Eliminacion de pagos",
-        operation_description="Se cancelan los pagos programados",
-        query_serializer=payments_serializer.PaymentQueryParamSerializer(),
-        responses={
-            status.HTTP_200_OK: payments_serializer.PaymentQueryParamSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Pagos']
-
-    )
+    @delete_payment_docs
     def delete_payment(self, request) -> Response:
         """Delete payment"""
         query_params_serializer = payments_serializer.PaymentQueryParamSerializer(

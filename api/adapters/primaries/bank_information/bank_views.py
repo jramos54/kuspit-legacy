@@ -12,6 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 from ....adapters.secondaries.factory import constructor_bank as bank_repository
 from ....engine.use_cases.factory import constructor_manager_bank as bank_engine
 from . import bank_serializer
+from .swagger_docs import list_banks_docs
 
 banks_repository = bank_repository.constructor_bank()
 banks_engine = bank_engine(banks_repository)
@@ -24,18 +25,7 @@ class BanksViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Listar los bancos disponibles",
-        operation_description="Muestra el catalogo de los bancos disponibles, se puede buscar po nombre o identificar el banco por CLABE",
-        query_serializer=bank_serializer.BankQueryParamsSerializer(),
-        responses={
-            status.HTTP_200_OK: bank_serializer.BankSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-
-        tags = ['Bancos']
-
-    )
+    @list_banks_docs
     def list_banks(self, request) -> Response:
         """List banks"""
         token = f"Bearer {request.user.open_fin_token}"

@@ -1,26 +1,30 @@
 version: '3.9'
 services:
-
   # API DyPD container
   dyp:
     container_name: api-dypd
-    build: .
-    command: gunicorn --bind :8000 --workers 4 --threads 4 --timeout 30 configuracion.wsgi:application
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: >
+      sh -c "
+      python manage.py collectstatic --no-input &&
+      gunicorn --bind :8000 --workers 4 --threads 4 --timeout 30 configuracion.wsgi:application"
+    
+    #  gunicorn --bind :8000 --workers 4 --threads 4 --timeout 30 configuracion.wsgi:application
     ports:
       - "8000:8000"
-    image: api-dypd
     env_file:
-      -  ./.env
+      - ./.env
     depends_on:
       - redis
       - celery
     volumes:
-      - .:/app
       - ./staticfiles:/app/staticfiles
     networks:
       - app_network
 
- # Redis Container
+  # Redis container
   redis:
     image: redis:6.0-alpine
     container_name: redis
@@ -29,10 +33,12 @@ services:
     networks:
       - app_network
 
- # Celery container
+  # Celery container
   celery:
     container_name: celery
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: celery -A celery_app worker --loglevel=info --pool=threads --concurrency=4
     image: celery
     depends_on:
@@ -43,9 +49,7 @@ services:
       - ./.env
     networks:
       - app_network
-      
-# Networks
+
 networks:
   app_network:
     driver: bridge
-

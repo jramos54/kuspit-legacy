@@ -98,3 +98,6 @@ QA_testing/
 
 README_.md
 .python-version
+.env_doc
+.env_server
+diagramas/

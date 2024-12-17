@@ -1,9 +1,7 @@
 # Local utilities
 import json, re
 from django.conf import settings
-from django.http import JsonResponse
 import ast
-
 
 import os
 from drf_yasg import openapi
@@ -13,23 +11,22 @@ from compartidos.serializers import NotFoundSerializer
 from apps.backoffice.models import users as users_models
 # Librerías de Terceros
 from rest_framework.permissions import DjangoModelPermissions
-from django.contrib.auth.models import Group
-from django.contrib.auth import get_user_model
 
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from django.shortcuts import get_object_or_404
 from .tasks import upload_file_task
 from . import recipients_batch_serializer
 from uuid import uuid4
-from redis import Redis
 import redis
-
-from django.http import StreamingHttpResponse
 
 from ...secondaries.db_open_fin.repository_implementation_recipient_batch_openfin import \
     RecipientBatchImplementation
-
+from .swagger_docs import (list_batch_recipients_docs,
+                           apply_batch_recipients_docs,
+                           delete_batch_recipient_file_docs,
+                           get_recipient_batch_progress_docs,
+                           list_uploaded_recipient_files_docs,
+                           upload_recipient_batch_file_docs)
 
 # Django REST Framework
 from drf_yasg.utils import swagger_auto_schema
@@ -45,16 +42,7 @@ class FileUploadView(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Servicio para carga masiva",
-        operation_description="Acepta un archivo csv con los datos para cargar",
-        # query_serializer=recipients_batch_serializer.FileContentSerializer(),
-        responses={
-            status.HTTP_202_ACCEPTED: "Archivo recibido y en proceso.",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Destinatarios"]
-    )
+    @upload_recipient_batch_file_docs
     def upload_file(self, request) -> Response:
         """Upload recipients file"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -83,16 +71,7 @@ class FileUploadView(viewsets.GenericViewSet):
 
         return Response({"task_id": task_id}, status=202)
 
-    @swagger_auto_schema(
-        operation_summary="Muestra los archivo cargados por el usuario",
-        operation_description="Lista todos los archivos que se han cargado en la plataforma",
-        # query_serializer=user_dashboard_serializer.UserDashboardSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Destinatarios"]
-    )
+    @list_uploaded_recipient_files_docs
     def get_uploaded_files(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -124,16 +103,7 @@ class FileUploadView(viewsets.GenericViewSet):
             response_data = {"detail": str(error_exception), "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Muestra el detalle de la carga masiva",
-        operation_description="Lista los campos y detalle de la carga masiva",
-        query_serializer=recipients_batch_serializer.QueryIdSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Destinatarios"]
-    )
+    @list_batch_recipients_docs
     def get_file_details(self, request) -> Response:
         """List File details"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -166,16 +136,7 @@ class FileUploadView(viewsets.GenericViewSet):
             response_data = {"detail": str(error_exception), "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Aplica los datos de la carga masiva",
-        operation_description="Se guardan en el listado de destinatarios los datos cargados",
-        query_serializer=recipients_batch_serializer.QueryIdSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Destinatarios"]
-    )
+    @apply_batch_recipients_docs
     def apply_file_recipients(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -202,16 +163,7 @@ class FileUploadView(viewsets.GenericViewSet):
             response_data = {"detail": str(error_exception), "data": ""}
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
 
-    @swagger_auto_schema(
-        operation_summary="Elimina un archivo cargado",
-        operation_description="Elimina un archivo cargado",
-        query_serializer=recipients_batch_serializer.QueryIdSerializer(),
-        responses={
-            status.HTTP_200_OK: "Listado exitoso",
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=["Carga Masiva Destinatarios"]
-    )
+    @delete_batch_recipient_file_docs
     def delete_file_uploaded(self, request) -> Response:
         """List recipients"""
         token = f"Bearer {request.user.open_fin_token}"
@@ -297,18 +249,7 @@ def event_stream(task_id):
             except Exception as e:
                 print(f"Error processing message: {e}")
 
-@swagger_auto_schema(
-    method='get',
-    operation_summary="Obtener progreso de la carga de archivo",
-    operation_description="Obtiene el progreso de la carga y procesamiento del archivo basado en el task_id.",
-    responses={
-        status.HTTP_200_OK: openapi.Response(
-            description="Progreso del archivo",
-        ),
-        status.HTTP_404_NOT_FOUND: "Task ID no encontrado",
-    },
-    tags=["Carga Masiva Destinatarios"]
-)
+@get_recipient_batch_progress_docs
 @api_view(['GET'])
 def file_progress_updates(request, task_id):
     print(f"Checking final message and errors in Redis for task_id: {task_id}")

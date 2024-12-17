@@ -22,6 +22,7 @@ from ....engine.use_cases.factory import (
     constructor_manager_movement_by_month as movement_engine,
 )
 from . import movements_historical_serializer
+from .swagger_docs import list_wallet_movements_historical_docs
 
 movements_repository = movement_repository.constructor_movements_historical()
 movements_engine = movement_engine(movements_repository)
@@ -34,17 +35,7 @@ class MovementsByMonthViewSet(viewsets.GenericViewSet):
     permission_classes = [DjangoModelPermissions]
     queryset = users_models.User.objects.all()
 
-    @swagger_auto_schema(
-        operation_summary="Muestra el historico de movimientos por mes",
-        operation_description="Muestra la suma de los movimientos por mes",
-        query_serializer=movements_historical_serializer.QueryParamMovementsByMonthSerializer(),
-        responses={
-            status.HTTP_200_OK: movements_historical_serializer.MovementsByMonthSerializer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Movimientos']
-
-    )
+    @list_wallet_movements_historical_docs
     def list_movements_by_month(self, request):
         start_time = time.time()
         token = f"Bearer {request.user.open_fin_token}"

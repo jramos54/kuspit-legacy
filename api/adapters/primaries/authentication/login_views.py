@@ -10,10 +10,11 @@ from rest_framework.response import Response
 from django.contrib.auth import get_user_model
 from rest_framework import status
 
-# Creo esta vista para usar el user agents.
-# Se crea en forma de metodo para solo copiar y pegar en la clase
-# vista del login.
-
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from drf_yasg import openapi
 
 def detect_device_login(request):
     # obtengo la informacion del usuario para guardarlo en la cookie
@@ -58,3 +59,5 @@ def detect_device_login(request):
                 functions.send_email_notification_html(subject, to, mensaje, {})
                 # return Response(mensaje, status=status.HTTP_200_OK)
         # Si no existe, es por que nisiquiera hay usuario, pero eso ya se valido antes
+
+

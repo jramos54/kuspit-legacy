@@ -20,6 +20,7 @@ from ....adapters.secondaries.factory import constructor_users as users_repo
 from ....engine.use_cases import factory as product_engine
 from ....engine.use_cases import factory as users_engine
 from . import products_serializers
+from .swagger_docs import list_wallet_types_docs
 
 # users engine implementation
 users_repository = users_repo.constructor_users(users_models.User)
@@ -34,17 +35,7 @@ class ProductsViewSet(viewsets.GenericViewSet):
     serializer_class = products_serializers.ProductsSerialazer
     permission_classes = [DjangoModelPermissions]
 
-    @swagger_auto_schema(
-        operation_summary="Lista los tipos de wallet disponibles",
-        operation_description="Lista los tipos de wallet disponibles",
-        query_serializer=products_serializers.ProductsQueryParamSerialazer(),
-        responses={
-            status.HTTP_200_OK: products_serializers.ProductsSerialazer(),
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-        tags=['Wallets/Cuentas']
-
-    )
+    @list_wallet_types_docs
     def list_products(self, request):
         """List/Retrieve products service"""
         token_openfin = request.user.open_fin_token

@@ -15,19 +15,13 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from django.utils import timezone
 from requests import request as external_request
-
+from .swagger_docs import logout_docs
 
 class LogoutView(GenericAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = TokenRefreshSerializer
 
-    @swagger_auto_schema(
-        request_body=TokenRefreshSerializer,
-        responses={
-            status.HTTP_200_OK: TokenRefreshSerializer,
-            status.HTTP_404_NOT_FOUND: NotFoundSerializer,
-        },
-    )
+    @logout_docs
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
         try:

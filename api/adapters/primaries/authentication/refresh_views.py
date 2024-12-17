@@ -4,12 +4,15 @@ from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.response import Response
 from rest_framework import status
+from drf_yasg.utils import swagger_auto_schema
 
 # Proyecto
 from .token_utils.token_functions import RefreshOpenfinToken
+from .swagger_docs import token_refresh_docs
 
 
 class CustomTokenRefreshView(TokenRefreshView):
+    @token_refresh_docs
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 

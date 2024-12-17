@@ -25,6 +25,7 @@ from ....adapters.secondaries.factory.constructor_change_password import (
 from apps.backoffice.models import User
 
 from . import change_password_serializer
+from .swagger_docs import cambiar_password_docs
 
 from ....adapters.secondaries.factory.constructor_email import constructor_user_dashboard as email_sender
 
@@ -44,17 +45,7 @@ class ChangePasswordViewSet(viewsets.GenericViewSet):
         self.username = None
         self.user_email = None
 
-    @swagger_auto_schema(
-        operation_summary="Cambio de contraseña",
-        operation_description="Servicio para cambio de contraseña por parte del usuario",
-        request_body=change_password_serializer.ChangePasswordSerializer(),
-        responses={
-            status.HTTP_200_OK: "Password cambiado exitosamente",
-            status.HTTP_404_NOT_FOUND: "Usuario no encontrado",
-            status.HTTP_400_BAD_REQUEST: "Error en la solicitud"
-        },
-        tags=['Cambiar Contraseña']
-    )
+    @cambiar_password_docs
     def cambiar_password(self, request) -> Response:
         """Cambiar la contraseña del usuario"""
 
