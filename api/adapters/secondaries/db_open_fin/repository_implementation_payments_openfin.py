@@ -77,7 +77,7 @@ class PaymentsImpl(repository.Payments):
         Create new account
         """
         openfin_data = {"detail": "el proveedor de openfin no respondió exitosamente"}
-
+      
         try:
             if payment_hour == None:
                 formatted_payment_date_str = payment_date.strftime("%d/%m/%Y")
@@ -92,6 +92,7 @@ class PaymentsImpl(repository.Payments):
                         "referencia": reference,
                     }
                 }
+                
             else:
                 formatted_payment_date_str = payment_date.strftime("%d/%m/%Y")
                 formatted_payment_hour_str = payment_hour.strftime("%H:%M:%S")
@@ -113,7 +114,7 @@ class PaymentsImpl(repository.Payments):
             openfin_response = requests.post(
                 self.url_creacion, json=openfin_info, headers=authorization
             )
-
+           
             # TODO: solicitar a openfin cambio de status code en reponse
             if openfin_response.status_code == 200:
                 openfin_data = openfin_response.json()

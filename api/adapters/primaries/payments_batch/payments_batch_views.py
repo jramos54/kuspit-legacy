@@ -137,10 +137,11 @@ class FilePaymentsUploadView(viewsets.GenericViewSet):
                 token=token
             )
             # Serializa los datos obtenidos
+            print(openfin_response)
             serializer = payments_batch_serializer.PaymentDetailImportedSerielizer(
                 data=openfin_response, many=True
             )
-
+            print(serializer)
             # Valida los datos serializados
             serializer.is_valid(raise_exception=True)
 

@@ -138,7 +138,7 @@ class PaymentsBatchImplementation:
             response_openfin = requests.post(
                 self.url_consulta, json=data, headers=authorization
             )
-
+            print(response_openfin.json())
             if response_openfin.status_code == 200:
                 openfin_data_response= response_openfin.json()
 

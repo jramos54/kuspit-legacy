@@ -49,7 +49,7 @@ class PaymentSerializer(serializers.Serializer):
     description = serializers.CharField(required=False)
     payment_date = serializers.DateField(required=False)
     reference = serializers.CharField(required=False)
-    payment_hour = serializers.TimeField(required=False)
+    payment_hour = serializers.TimeField(required=False,allow_null=True)
 
     def validate(self, attrs):
         validate_fields(attrs)

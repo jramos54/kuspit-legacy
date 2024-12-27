@@ -98,10 +98,14 @@ class BlacklistOpenfinMixin:
             url = f"http://{URL_BASE_OPENFIN}/rpc/auth"
             user_email = user.email
             user_password = pswd
+            print(url)
+    
             payload = f"username={user_email}&pass={user_password}"
+            print(payload)
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
             response = request("POST", url, headers=headers, data=payload)
             response_data = json.loads(response.text)
+            print(response_data)
 
             if response.status_code != 200:
                 raise TokenError("Error al iniciar sesión en OpenFin")

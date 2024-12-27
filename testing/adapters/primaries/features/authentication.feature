@@ -17,7 +17,7 @@ Feature: Servicio de Login
         Given El url "$LOGIN"
         And Se obtienen los valores de la tabla
         | email                           | password      |
-        | user@noregistrado.com           |$PASSWORD_3    |
+        | user@noregistrado.com           |$PASSWORD_1    |
         When Se envia una solicitud POST
         Then Se valida la respuesta codigo "401"
         Then Se recibe un mensaje "Este correo no está registrado, ¿Deseas registrarte?"

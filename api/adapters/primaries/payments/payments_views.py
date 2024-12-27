@@ -80,7 +80,7 @@ class PaymentsViewSet(viewsets.GenericViewSet):
         )
 
         try:
-
+            print(payment_openfin)
             serializer = payments_serializer.OpenFinPaymentSerializer(
                 data=payment_openfin.__dict__
             )
